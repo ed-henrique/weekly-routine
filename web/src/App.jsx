@@ -405,8 +405,8 @@ function Timeline({ tasks, catMap, doneMap, onToggle, onEdit, isToday, nowMin })
 
   // PPM: pixels per minute. All positions go through px() so sub-pixel
   // values are rounded once — preventing cumulative drift.
-  const PPM = 64 / 60; // exactly 64px per hour, clean integer per hour boundary
-  const px = (min) => Math.round((min - startH * 60) * PPM);
+  const PPM = 64 / 60; // exactly 64px per hour -> clean integer at every hour boundary
+  const px = (minSinceStart) => Math.round(minSinceStart * PPM);
   const BLOCK_GAP = 3; // visual gap between adjacent blocks (px), applied as bottom inset
 
   return (
