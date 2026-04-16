@@ -3,8 +3,8 @@ services:
     build: .
     image: daily-planner
     restart: unless-stopped
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     volumes:
       - daily_data:/data
 volumes:
