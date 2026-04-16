@@ -412,6 +412,11 @@ function Timeline({ tasks, catMap, doneMap, onToggle, onEdit, isToday, nowMin })
   const LABEL_W  = 52; // px — time label column
   const GUTTER   = 8;  // px — gap between label and blocks
   const BLOCK_L  = LABEL_W + GUTTER; // 60px from left
+  const GAP      = 2;  // px gap between touching blocks
+  const FLOOR    = 18; // minimum block height (can be less if avail forces it)
+
+  // Pre-compute tops so each block can know how much space it has before the next one
+  const tops = tasks.map(t => px(toMin(t.start) - startH * 60));
 
   return (
     <div className="relative w-full" style={{ height: totalHeight + 32 }}>
@@ -449,10 +454,12 @@ function Timeline({ tasks, catMap, doneMap, onToggle, onEdit, isToday, nowMin })
       })()}
 
       {/* ── Task blocks ── all direct children of the relative container */}
-      {tasks.map(t => {
+      {tasks.map((t, i) => {
         const cat    = catMap[t.category] || { color: "#475569", name: "—" };
-        const topPx  = px(toMin(t.start) - startH * 60);
-        const blockH = Math.max(28, px(t.duration) - 3); // -3 = visual gap between touching blocks
+        const topPx  = tops[i];
+        const nextTop = i + 1 < tasks.length ? tops[i + 1] : topPx + px(t.duration) + GAP;
+        const avail  = nextTop - topPx - GAP;           // hard ceiling: block cannot reach next block
+        const blockH = Math.min(Math.max(FLOOR, px(t.duration) - GAP), avail);
         const isDone = !!doneMap[t.id];
 
         return (
