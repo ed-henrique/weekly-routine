@@ -402,7 +402,8 @@ function Timeline({ tasks, catMap, doneMap, onToggle, onEdit, isToday, nowMin })
   const startH   = Math.max(0, Math.floor(Math.min(...starts,300)/60));
   const endH     = Math.min(24, Math.ceil(Math.max(...ends,22*60)/60));
   const hours    = Array.from({length:endH-startH},(_,i)=>startH+i);
-  const PPM      = 1.6; // pixels per minute
+  // const PPM      = 1.6; // pixels per minute
+  const PPM      = 1; // pixels per minute
   const top      = (min) => (min - startH*60)*PPM;
 
   return (
