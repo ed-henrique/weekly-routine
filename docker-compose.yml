@@ -1,0 +1,11 @@
+services:
+  daily:
+    build: .
+    image: daily-planner
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - daily_data:/data
+volumes:
+  daily_data:
